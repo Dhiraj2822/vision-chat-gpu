@@ -9,6 +9,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  devServer: {
+    port: 8000,
+  },
 }
 
 export default nextConfig

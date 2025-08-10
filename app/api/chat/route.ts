@@ -137,3 +137,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Failed to generate response" }, { status: 500 })
   }
 }
+
+// --- GPU API integration ---
+// To use the GPU API, uncomment the following and comment out the generateChatResponse logic above:
+/*
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    const { message } = await req.json();
+    // Replace <gpu-server-ip> with your actual GPU server IP or hostname
+    const response = await fetch("http://<gpu-server-ip>:5000/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
+    });
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Failed to connect to GPU API" }, { status: 500 });
+  }
+}
+*/
