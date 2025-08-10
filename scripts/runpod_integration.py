@@ -7,7 +7,7 @@ from typing import Dict, List, Any
 
 class RunPodManager:
     def __init__(self):
-        self.api_base = os.getenv('RUNPOD_API_BASE', 'https://evrj8nq9h18vds-8080.proxy.runpod.net')
+        self.api_base = os.getenv('RUNPOD_API_BASE', 'http://172.22.0.2:8000')
         self.ssh_key_path = os.getenv('RUNPOD_SSH_KEY', '/app/keys/vuencode_teamXX_id_ed25519')
         self.pod_id = os.getenv('RUNPOD_POD_ID', 'btednxbqzscmco')
         self.ssh_host = 'ssh.runpod.io'
