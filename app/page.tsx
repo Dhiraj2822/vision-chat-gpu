@@ -45,8 +45,10 @@ export default function HomePage() {
       try {
         const formData = new FormData()
         formData.append("video", file)
+        formData.append("prompt", "Describe this video.")
 
-        const response = await fetch("/api/process-video", {
+        // Updated: Send to /api/llama instead of /api/process-video
+        const response = await fetch("/api/llama", {
           method: "POST",
           body: formData,
         })
@@ -56,7 +58,17 @@ export default function HomePage() {
         }
 
         const result = await response.json()
-        setProcessingResult(result)
+        let patchedResult = result
+        if (typeof result.response === 'string') {
+          patchedResult = {
+            id: Date.now().toString(),
+            video_url: URL.createObjectURL(file), // Use local preview for video
+            events: [],
+            summary: result.response,
+            captions: [],
+          }
+        }
+        setProcessingResult(patchedResult)
         setCurrentStep("results")
 
         toast({
@@ -237,12 +249,18 @@ export default function HomePage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <video
-                        src={processingResult.video_url}
-                        controls
-                        className="w-full rounded-lg"
-                        poster="/video-thumbnail.png"
-                      />
+                      {processingResult.video_url ? (
+                        <video
+                          src={processingResult.video_url}
+                          controls
+                          className="w-full rounded-lg"
+                          poster="/video-thumbnail.png"
+                        />
+                      ) : (
+                        <div className="w-full h-48 flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400">
+                          No video preview available
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
 
